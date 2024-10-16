@@ -1,7 +1,6 @@
-
 # Mock API
 
-Este projeto é um mock de uma API usando Express.js, construído em Node.js e Docker. 
+Este projeto é um mock de uma API usando Express.js, construído em Node.js e Docker.
 
 ## Requisitos
 
@@ -30,6 +29,7 @@ docker-compose up --build
 ```
 
 Isso irá:
+
 - Construir a imagem Docker usando o `Dockerfile`.
 - Instalar as dependências necessárias.
 - Iniciar o servidor Node.js.
@@ -38,13 +38,18 @@ A aplicação estará rodando no endereço: `http://localhost:9777`.
 
 ### Passo 3: Acessar a API
 
-Uma vez que o contêiner esteja em execução, você pode acessar a rota `GET /box-lock` através do seguinte URL:
+Uma vez que o contêiner esteja em execução, você pode acessar as seguintes rotas disponíveis:
+
+#### Rota `GET /box-lock`
+
+Ela retorna as informações de oferta para o usuário, caso ele deseja fazer um upgrade para utilizar
+as funcionalidades da página.
 
 ```
 http://localhost:9777/box-lock
 ```
 
-A resposta será um JSON formatado com as informações do mock:
+A resposta será um JSON formatado com as informações:
 
 ```json
 {
@@ -73,6 +78,63 @@ A resposta será um JSON formatado com as informações do mock:
 }
 ```
 
+#### Rota `GET /experiment/participate`
+
+Ela retorna informações do experimento que o usuário foi sorteado para participar. Esses dados
+serão importantes para decidir o que ele irá visualizar, de acordo com a alternativa escolhida
+para ele.
+
+```
+http://localhost:9777/experiment/participate
+```
+
+A resposta será um JSON formatado com as informações:
+
+```json
+{
+  "alternative": {
+    "name": "control"
+  },
+  "client_id": "a8f0a7cd-ab76-4fa1-9294-7aac653010d9",
+  "experiment": {
+    "name": "litigants-experiment"
+  },
+  "experiment_group": {
+    "name": "justarter"
+  },
+  "participating": true,
+  "simulating": false,
+  "status": "ok"
+}
+```
+
+Além disso você pode forçar um cenário que o usuário está participando de uma determinada alternativa, caso
+precise testar algum cenário, por exemplo, o usuário ser sorteado em uma variante específica:
+
+```
+http://localhost:9777/experiment/participate?alternative=variant-a&simulating=true
+```
+
+E assim a resposta vai trazer os dados como se ele foi selecionado:
+
+```json
+{
+  "alternative": {
+    "name": "variant-a"
+  },
+  "client_id": "a8f0a7cd-ab76-4fa1-9294-7aac653010d9",
+  "experiment": {
+    "name": "litigants-experiment"
+  },
+  "experiment_group": {
+    "name": "justarter"
+  },
+  "participating": false,
+  "simulating": true,
+  "status": "ok"
+}
+```
+
 ## Como parar a aplicação
 
 Para parar a execução da API, use o seguinte comando:
@@ -90,4 +152,3 @@ Esse comando irá parar e remover o contêiner.
 - `index.mjs`: Arquivo principal da aplicação, que define a rota e a lógica da API.
 - `src/mocks/box-lock.mjs`: Mock de dados para a rota `/box-lock`.
 - `package.json`: Contém as dependências do projeto e os scripts para rodar a aplicação.
-
