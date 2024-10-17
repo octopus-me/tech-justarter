@@ -25,7 +25,6 @@ export default [
     },
     rules: {
       'prettier/prettier': 'error',
-      // Regras para ordenar imports
       'import/order': [
         'error',
         {
