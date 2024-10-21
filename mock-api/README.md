@@ -54,22 +54,22 @@ A resposta será um JSON formatado com as informações:
 ```json
 {
   "header": {
-    "title": "Assine agora para ter acesso completo a processos"
+    "title": "Entenda a situação atual deste processo",
+    "subtitle": "Assine agora para acessar e acompanhar todas as informções deste processo"
   },
   "body": {
-    "card": {
-      "benefits": [
-        "Acesso completo as informações de processos no Jusbrasil",
-        "Acesso a documentos de processos para partes envolvidas ou advogados",
-        "Acompanhe até 5 processos e seja notificado a cada nova movimentação"
-      ],
-      "price": {
-        "label": "R$ 29,90",
-        "description": "por mês"
-      },
-      "button": {
-        "label": "Assinar agora"
-      }
+    "benefits": [
+      "Acesso completo as informações de processos no Jusbrasil",
+      "Acesso a documentos de processos para partes envolvidas ou advogados",
+      "Acompanhe até 5 processos e seja notificado a cada nova movimentação"
+    ],
+    "price": {
+      "current": "R$ 1,90",
+      "next": "R$ 29,90",
+      "period": "primeiro mes"
+    },
+    "button": {
+      "label": "Assinar agora"
     }
   },
   "footer": {
@@ -77,6 +77,10 @@ A resposta será um JSON formatado com as informações:
   }
 }
 ```
+
+Você deve usar esse `JSON` para preencher essa modal abaixo.
+
+![Modal](img/modal-example.png)
 
 #### Rota `GET /experiment/participate`
 
