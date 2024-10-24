@@ -62,7 +62,14 @@ Este diretório contém as definições de schema GraphQL para a aplicação, or
   - `index.js`: Serve como ponto de entrada que consolida e exporta todos os schemas definidos, definindo os types de `Query` e `Mutation` agregando campos a partir dos types incluídos.
 
 #### Atualizando o `schema/index.js`
-Ao adicionar um novo "type" no projeto, lembre-se de importar o novo "type" no `schema/index.js` e incluí-lo nos campos de `Query` e `Mutation`.
+Ao adicionar um novo "type" no projeto, ele vai ser importado automaticamente no schema do graphql. No entanto, para funcionar corretamente, você precisar exportar no `index.js` de cada type o seguinte formato:
+```
+export default {
+  mutations,
+  queries,
+  typeDefs,
+};
+```
 
 #### `types/`
 O diretório `types/` armazena definições de types e funcionalidades relacionadas a diferentes entidades do projeto. Ele está subdividido em módulos específicos.
@@ -88,7 +95,7 @@ Os types `Address` e `User` são apenas exemplos e não vão ser necessários pa
 #### Adicionando novos Types
 1. Crie um subdiretório dentro de `types/` para a nova entidade.
 2. Dentro do subdiretório, implemente os arquivos necessários, como `index.js`, `typeDefs.js`, e pastas para `queries/` e `mutations`.
-3. Lembre-se de atualizar o `schema/index.js` para incluir as queries e mutations do novo type.
+3. Lembre-se de exportar o novo type corretamente.
 
 ---
 
