@@ -4,9 +4,9 @@ import path from 'path';
 import { GraphQLString } from 'graphql';
 
 const loadSchemaFields = (typesDir) => {
+  let aggregatedTypes = {};
   let aggregatedQueries = {};
   let aggregatedMutations = {};
-  let aggregatedTypes = {};
 
   const typeFolders = fs.readdirSync(typesDir).filter((folder) => {
     const folderPath = path.join(typesDir, folder);
