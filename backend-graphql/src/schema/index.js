@@ -1,27 +1,25 @@
 import { GraphQLSchema, GraphQLObjectType } from 'graphql';
 
-import Address from './types/address';
-import User from './types/user';
+import { types, queries, mutations } from './loader';
 
 const QueryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
-    ...Address.queries,
-    ...User.queries,
+    ...queries,
   }),
 });
 
 const MutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
-    ...Address.mutations,
-    ...User.mutations,
+    ...mutations,
   }),
 });
 
 const schema = new GraphQLSchema({
   query: QueryType,
   mutation: MutationType,
+  types,
 });
 
 export default schema;
