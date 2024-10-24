@@ -1,11 +1,11 @@
-import js from '@eslint/js';
-import importPlugin from 'eslint-plugin-import';
-import jestPlugin from 'eslint-plugin-jest';
-import prettierPlugin from 'eslint-plugin-prettier';
-import globals from 'globals';
+const js = require('@eslint/js');
+const importPlugin = require('eslint-plugin-import');
+const jestPlugin = require('eslint-plugin-jest');
+const prettierPlugin = require('eslint-plugin-prettier');
+const globals = require('globals');
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
-export default [
+module.exports = [
   {
     ignores: ['node_modules'],
   },
