@@ -108,8 +108,8 @@ const lawsuits = [
             }
         ],
         partes: {
-            autor : "Maria",
-            reu : "Fabio"
+            autor : "Tatiana",
+            reu : "Julia"
         }
     },
     {

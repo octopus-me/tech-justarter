@@ -1,7 +1,9 @@
 import { gql, useQuery } from "@apollo/client";
-import { Button, Flex, Strong, Text } from "@radix-ui/themes";
+import { Box, Button, Flex, Strong, Text } from "@radix-ui/themes";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import SubscriptionModal from "@/components/subscriptionModal";
+import { useState } from "react";
 
 const GET_PROCESS = gql`
 query GetLawsuitQuery($numero: String!) {
@@ -38,6 +40,21 @@ export default function Processo(){
     if (error) return <p>Erro ao carregar o processo: {error.message}</p>;
 
     const processo = data?.getLawsuitQuery;
+    const movimentos = processo?.movimentos || [];
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // Função para abrir o pop up de assinatura
+    const handleMovimentoClick = () =>{
+        setIsModalOpen(true);
+        // alert("Assine para ver mais detalhes!");
+        // Depois irei redirecionar para outra coisa
+        // router.push("/pagina_desejada")
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    }
 
     return (
         <>
@@ -45,25 +62,124 @@ export default function Processo(){
                 <title>Detalhes do Processo</title>
             </Head>
             <main>
-                <Flex direction="column" gap="4">
-                    <Text size="5"><Strong>Processo n. {processo.numero} do {processo.tribunal}  </Strong></Text>
-                    <Text size="1">Distribuído em: {processo.dataInicio}</Text>
-                    
-                    <Text>Autor: {processo.partes.autor}</Text>
-                    <Text>Réu: {processo.partes.reu}</Text>
+                <Flex direction="column" align="center" style={{padding:"20px"}}>
 
-                    <Text>Movimentações:</Text>
-                    {processo.movimentos.map((movimento, index) => (
-                    <Flex key={index} direction="column">                        
-                        <Text size="1">Data: {movimento.date}</Text>
+                    {/*TÍTULO DO PROCESSO*/}
+                    <Box style={{width: "100%", maxWidth: "800px", textAlign:"left", marginBottom: "20px"}}>
 
-                        <Text> {movimento.description}</Text>
+                        <Flex>
+                            <Text size="6" ><Strong>Processo n. {processo.numero} do {processo.tribunal}  </Strong></Text>
+                        </Flex>
+
+                        <Flex>
+                            <Text size="1" color="gray">Distribuído em: {processo.dataInicio}</Text>
+                        </Flex>
+
+                    </Box>
+
+                    {/*LAYOUT PRINCIPAL*/}
+                    <Flex direction="row" gap="4" style={{width: "100%", maxWidth: "800px"}}>
+
+                        {/*MOVIMENTAÇÕES - COLUNA DA ESQUERDA */}
+                        <Box style={{flex:2, paddingRight: "30px", padding: "30px",background: "#f5f5f5"}}>
+                            <Text size="4" style={{marginBottom: "10px"}}>
+                                <Strong>Movimentações</Strong>
+                            </Text>
+
+                            {movimentos.map((movimento, index) => {
+                                const isLastMovimento = index === movimentos.length - 1;
+                                return (
+                                    <Box
+                                        key={movimento.id}
+                                        onClick={isLastMovimento ? handleMovimentoClick : null}
+                                        style={{
+                                            background: "#f5f5f5",
+                                            padding: "15px",
+                                            marginBottom: "10px",
+                                            borderRadius: "4px",
+                                            border: "1px solid #ddd",
+                                            cursor: isLastMovimento ? "pointer" : "defaul",
+                                            filter: isLastMovimento ? "blur(4px)" : "none",
+                                            transition: "filter 0.3s ease",
+                                        }}
+                                    >
+                                        <Flex>
+                                            <Text size="1" color="gray">{movimento.date}</Text>
+
+                                        </Flex>
+                                        <Flex>
+                                            <Text size="2" style={{marginTop: "5px"}}>{movimento.description}</Text>
+                                        </Flex>
+                                    </Box>
+                                )
+                            })}
+
+                            
+                        </Box>
+                        
+                        {/*DETALHES DO PROCESSO E PARTES ENVOLVIDAS - COLUNA DA DIREITA */}
+                        <Box style={{flex: 1, paddingLeft:"20px"}}>
+
+                            {/*DETALHES DO PROCESSO */}
+                            <Box
+                                style={{
+                                    background: "#f5f5f5",
+                                    padding: "15px",
+                                    marginBottom: "20px",
+                                    borderRadius: "4px",
+                                    border: "1px solid #ddd"
+                                }}>
+                                    <Flex>
+                                        <Text size="4" style={{marginBottom: "20px"}}>
+                                            <Strong>Detalhes do processo</Strong>
+                                        </Text>
+                                    </Flex>
+
+                                    <Flex>
+                                        <Text size="2" style={{marginTop: "5px", marginBottom: "20px"}} color="gray">Comprinteo de Sentença - Honorários Advocatícios</Text>
+
+                                    </Flex>
+
+                                    <Flex>
+                                        <Text size="2" color="gray" style={{marginBottom: "20px"}}>Processo Judicial - Rito ordinário</Text>
+                                    </Flex>
+
+                                    <Flex>
+                                        <Text size="2" color="gray" style={{marginBottom: "20px"}}>Valor da causa: R$ 31.387,90</Text>
+                                    </Flex>
+                            </Box>
+                        
+                            {/*PARTES ENVOLVIDAS */}
+                            <Box 
+                                style={{
+                                    background: "#f5f5f5",
+                                    padding: "15px",
+                                    borderRadius: "4px",
+                                    border: "1px solid #ddd"
+                                }}>
+                                    <Flex>
+                                        <Text size="4">
+                                            <Strong>Partes envolvidas</Strong>
+                                        </Text>
+                                    </Flex>
+
+                                    <Flex>
+                                        <Text size="2" style={{ marginTop: "5px" }}>Autor: {processo.partes.autor}</Text>
+                                    </Flex>
+
+                                    <Flex>
+                                        <Text size="2">Réu: {processo.partes.reu}</Text>
+                                    </Flex>
+
+                            </Box>
+                        </Box>
                     </Flex>
-                    ))}
 
                     <Button onClick={() => alert("Assine para ver mais detalhes!")}>
                         Assine agora
                     </Button>
+
+                    {isModalOpen && <SubscriptionModal onClose={closeModal}/>}
                 </Flex>
             </main>
         </>
