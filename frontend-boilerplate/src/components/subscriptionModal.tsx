@@ -59,10 +59,10 @@ export default function SubscriptionModal({ onClose }) {
           backgroundColor: "#fff",
           borderRadius: "8px",
           padding: "40px",
-          width: "400px",
+          width: "650px",
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
           position: "relative",
-          maxHeight:"800px"
+          maxHeight:"650px"
         }}
       >
         <Button

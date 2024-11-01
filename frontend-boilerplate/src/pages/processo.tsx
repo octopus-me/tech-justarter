@@ -5,6 +5,9 @@ import { useRouter } from "next/router";
 import SubscriptionModal from "@/components/subscriptionModal";
 import { useState } from "react";
 
+import logo from '../img/logo-jusbrasil-1200-1200.png';
+import Image from  'next/image';
+
 const GET_PROCESS = gql`
 query GetLawsuitQuery($numero: String!) {
   getLawsuitQuery(numero: $numero) {
@@ -56,12 +59,41 @@ export default function Processo(){
         setIsModalOpen(false);
     }
 
+    const handleCadastroClick = () => {
+        alert("Ainda não implementado");
+      };
+    
+      const handleLoginClick = () => {
+        alert("Ainda não implementado");
+      };
+    
+      const backToHomePage = () => {
+        router.push({
+          pathname: "/"
+        });
+      };
+
     return (
         <>
             <Head>
                 <title>Detalhes do Processo</title>
             </Head>
             <main>
+
+                <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px' }}>
+                    <div>
+                        <Flex style={{alignItems: 'center'}}>
+                        <Image src={logo} alt="Logo" width={50} height={50} onClick={backToHomePage}/>
+                        <Text size="5" style={{paddingLeft:"5px"}} onClick={backToHomePage}>MiniJus</Text>
+                        </Flex>
+                    </div>
+
+                    <div>
+                        <Button onClick={handleCadastroClick} variant="outline">Cadastre-se</Button>
+                        <Button onClick={handleLoginClick} style={{ marginLeft: '10px' }}>Entrar</Button>
+                    </div>
+                </header>
+
                 <Flex direction="column" align="center" style={{padding:"20px"}}>
 
                     {/*TÍTULO DO PROCESSO*/}
