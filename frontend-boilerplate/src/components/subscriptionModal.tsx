@@ -1,6 +1,6 @@
 import { useQuery, gql } from "@apollo/client";
 import { Flex, Box, Text, Strong, Button, Container } from "@radix-ui/themes";
-import logo from './logo-jusbrasil-1200-1200.png';
+import logo from '../img/logo-jusbrasil-1200-1200.png';
 import Image from  'next/image';
 
 // Defina a query GraphQL que vamos usar para buscar os dados
@@ -62,6 +62,7 @@ export default function SubscriptionModal({ onClose }) {
           width: "400px",
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
           position: "relative",
+          maxHeight:"800px"
         }}
       >
         <Button
@@ -73,11 +74,11 @@ export default function SubscriptionModal({ onClose }) {
             right: "10px",
           }}
         >
-          ×
+         x 
         </Button>
 
         <Flex direction="column" align="center" gap="4">
-        <Image src={logo} alt="Logo" width={30} height={30} style={{ marginBottom: "10px" }} />
+        <Image src={logo} alt="Logo" width={50} height={50} style={{ marginBottom: "10px" }} />
 
 
 
@@ -109,7 +110,7 @@ export default function SubscriptionModal({ onClose }) {
             {boxLockData.body.price.period}
           </Text>
 
-          <Button variant="green" size="large" style={{ width: "100%" }}>
+          <Button variant="solid"  size="large" style={{ width: "100%" }}>
             {boxLockData.body.button.label}
           </Button>
 
