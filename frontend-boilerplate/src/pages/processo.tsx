@@ -11,10 +11,13 @@ import Image from  'next/image';
 const GET_PROCESS = gql`
 query GetLawsuitQuery($numero: String!) {
   getLawsuitQuery(numero: $numero) {
-    id
-    tribunal
-    dataInicio
     numero
+    advogados
+    juiz
+    valor
+    assunto
+    dataInicio
+    id
     movimentos {
       date
       description
@@ -24,7 +27,7 @@ query GetLawsuitQuery($numero: String!) {
       autor
       reu
     }
-
+    tribunal
   }
 }
 `;
@@ -80,11 +83,19 @@ export default function Processo(){
             </Head>
             <main>
 
-                <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px' }}>
+                <header style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    padding: '20px', 
+                    maxWidth: '1000px', 
+                    margin: '0 auto', 
+                    width: '100%' 
+                }}>
                     <div>
-                        <Flex style={{alignItems: 'center'}}>
-                        <Image src={logo} alt="Logo" width={50} height={50} onClick={backToHomePage}/>
-                        <Text size="5" style={{paddingLeft:"5px"}} onClick={backToHomePage}>MiniJus</Text>
+                        <Flex style={{ alignItems: 'center' }}>
+                            <Image src={logo} alt="Logo" width={50} height={50} onClick={backToHomePage} />
+                            <Text size="5" style={{ paddingLeft: "5px" }} onClick={backToHomePage}>MiniJus</Text>
                         </Flex>
                     </div>
 
@@ -93,6 +104,9 @@ export default function Processo(){
                         <Button onClick={handleLoginClick} style={{ marginLeft: '10px' }}>Entrar</Button>
                     </div>
                 </header>
+
+
+
 
                 <Flex direction="column" align="center" style={{padding:"20px"}}>
 
@@ -113,7 +127,7 @@ export default function Processo(){
                     <Flex direction="row" gap="4" style={{width: "100%", maxWidth: "800px"}}>
 
                         {/*MOVIMENTAÇÕES - COLUNA DA ESQUERDA */}
-                        <Box style={{flex:2, paddingRight: "30px", padding: "30px",background: "#f5f5f5"}}>
+                        <Box style={{flex:2, paddingRight: "30px", padding: "30px"}}>
                             <Text size="4" style={{marginBottom: "10px"}}>
                                 <Strong>Movimentações</Strong>
                             </Text>
@@ -161,24 +175,47 @@ export default function Processo(){
                                     borderRadius: "4px",
                                     border: "1px solid #ddd"
                                 }}>
+                                    
                                     <Flex>
                                         <Text size="4" style={{marginBottom: "20px"}}>
                                             <Strong>Detalhes do processo</Strong>
                                         </Text>
                                     </Flex>
 
-                                    <Flex>
-                                        <Text size="2" style={{marginTop: "5px", marginBottom: "20px"}} color="gray">Comprinteo de Sentença - Honorários Advocatícios</Text>
 
-                                    </Flex>
+                                    {processo.juiz && 
+                                        <Flex>
+                                            <Text size="2" color="gray" style={{marginBottom: "20px"}}>Juiz: {processo.juiz}</Text>
+                                        </Flex>
+                                    }
+                                    
+                                    {processo.assunto && 
+                                        <Flex>
+                                            <Text size="2" color="gray" style={{marginBottom: "20px"}}>Assunto: {processo.assunto}</Text>
+                                        </Flex>
+                                    }
 
-                                    <Flex>
-                                        <Text size="2" color="gray" style={{marginBottom: "20px"}}>Processo Judicial - Rito ordinário</Text>
-                                    </Flex>
+                                    {processo.advogados && 
+                                        <Flex>
+                                            <Text size="2" color="gray" style={{ marginBottom: "20px" }}>
+                                                Advogados :  
+                                                {processo.advogados.map((advogado, index) => (
+                                                    <ul key={index}>
+                                                        {advogado}
+                                                        {index < processo.advogados.length - 1 && ', '} {/* Adiciona vírgula entre os nomes */}
+                                                    </ul>
+                                                ))}
+                                            </Text>
+                                        </Flex>
+                                    }
+           
+                                    
 
-                                    <Flex>
-                                        <Text size="2" color="gray" style={{marginBottom: "20px"}}>Valor da causa: R$ 31.387,90</Text>
-                                    </Flex>
+                                    {processo.valor && 
+                                        <Flex>
+                                            <Text size="2" color="gray" style={{marginBottom: "20px"}}>Valor da causa: R$ {processo.valor}</Text>
+                                        </Flex>
+                                    }
                             </Box>
                         
                             {/*PARTES ENVOLVIDAS */}
@@ -196,19 +233,19 @@ export default function Processo(){
                                     </Flex>
 
                                     <Flex>
-                                        <Text size="2" style={{ marginTop: "5px" }}>Autor: {processo.partes.autor}</Text>
+                                        <Text size="2" style={{ marginTop: "5px" }} color="gray">Autor: {processo.partes.autor}</Text>
                                     </Flex>
 
                                     <Flex>
-                                        <Text size="2">Réu: {processo.partes.reu}</Text>
+                                        <Text size="2" color="gray">Réu: {processo.partes.reu}</Text>
                                     </Flex>
 
                             </Box>
                         </Box>
                     </Flex>
 
-                    <Button onClick={() => alert("Assine para ver mais detalhes!")}>
-                        Assine agora
+                    <Button onClick={handleMovimentoClick}>
+                        VERIFICAR SITUAÇÃO
                     </Button>
 
                     {isModalOpen && <SubscriptionModal onClose={closeModal}/>}

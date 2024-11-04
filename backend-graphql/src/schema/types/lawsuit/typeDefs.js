@@ -3,8 +3,8 @@ import {
     GraphQLID, 
     GraphQLString, 
     GraphQLNonNull, 
-    GraphQLScalarType, 
-    GraphQLList
+    GraphQLList,
+    GraphQLFloat
 } from "graphql";
 
 import { MovementsType } from "../movements/typeDefs";
@@ -19,6 +19,10 @@ export const LawsuitType = new GraphQLObjectType({
         tribunal : {type: new GraphQLNonNull(GraphQLString)},
         dataInicio : {type: GraphQLString},
         movimentos: {type: new GraphQLList(MovementsType)},
-        partes : {type: new GraphQLNonNull(PartsType)}
+        partes : {type: new GraphQLNonNull(PartsType)},
+        assunto : {type : GraphQLString},
+        juiz: {type: GraphQLString},
+        advogados : {type: new GraphQLList(GraphQLString)},
+        valor : {type: GraphQLFloat}
     })
 })

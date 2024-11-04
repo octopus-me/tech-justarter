@@ -17,10 +17,13 @@ import Image from  'next/image';
 const GET_PROCESS = gql`
 query GetLawsuitQuery($numero: String!) {
   getLawsuitQuery(numero: $numero) {
-    id
-    tribunal
-    dataInicio
     numero
+    advogados
+    juiz
+    valor
+    assunto
+    dataInicio
+    id
     movimentos {
       date
       description
@@ -30,7 +33,7 @@ query GetLawsuitQuery($numero: String!) {
       autor
       reu
     }
-
+    tribunal
   }
 }
 `;
@@ -78,19 +81,27 @@ export default function Consulta() {
 
 
        <main>
-        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px' }}>
-          <div>
-            <Flex style={{alignItems: 'center'}}>
-              <Image src={logo} alt="Logo" width={50} height={50} onClick={backToHomePage}/>
-              <Text size="5" style={{paddingLeft:"5px"}} onClick={backToHomePage}>MiniJus</Text>
-            </Flex>
-          </div>
+       <header style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    padding: '20px', 
+                    maxWidth: '1000px', 
+                    margin: '0 auto', 
+                    width: '100%' 
+                }}>
+                    <div>
+                        <Flex style={{ alignItems: 'center' }}>
+                            <Image src={logo} alt="Logo" width={50} height={50} onClick={backToHomePage} />
+                            <Text size="5" style={{ paddingLeft: "5px" }} onClick={backToHomePage}>MiniJus</Text>
+                        </Flex>
+                    </div>
 
-          <div>
-            <Button onClick={handleCadastroClick} variant="outline">Cadastre-se</Button>
-            <Button onClick={handleLoginClick} style={{ marginLeft: '10px' }}>Entrar</Button>
-          </div>
-        </header>
+                    <div>
+                        <Button onClick={handleCadastroClick} variant="outline">Cadastre-se</Button>
+                        <Button onClick={handleLoginClick} style={{ marginLeft: '10px' }}>Entrar</Button>
+                    </div>
+                </header>
 
         
 
